@@ -73,7 +73,7 @@ specific marker within each cluster and the number of cells in the cluster." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SPIAT</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4</span>
       </span>
     </div>
 
@@ -136,7 +136,8 @@ specific marker within each cluster and the number of cells in the cluster.</p>
 
     <pre class="usage"><span class='fu'>composition_of_clusters_and_communities</span><span class='op'>(</span>
   <span class='va'>formatted_data_with_clusters</span>,
-  <span class='va'>column_to_consider</span>
+  <span class='va'>type_of_aggregate</span>,
+  <span class='va'>column</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -147,8 +148,12 @@ specific marker within each cluster and the number of cells in the cluster.</p>
       <td><p>- a dataframe output from generate_clusters</p></td>
     </tr>
     <tr>
-      <th>column_to_consider</th>
-      <td><p>Column name to consider as community/clusters</p></td>
+      <th>type_of_aggregate</th>
+      <td><p>Cluster or Community</p></td>
+    </tr>
+    <tr>
+      <th>column</th>
+      <td><p>Column with cell types</p></td>
     </tr>
     </table>
 
@@ -158,7 +163,7 @@ specific marker within each cluster and the number of cells in the cluster.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>communities</span> <span class='op'>&lt;-</span> <span class='fu'><a href='identify_cell_communities.html'>identify_cell_communities</a></span><span class='op'>(</span><span class='fu'>SPIAT</span><span class='fu'>::</span><span class='va'><a href='formatted_image.html'>formatted_image</a></span>, radius<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span>
-</div><div class='img'><img src='composition_of_clusters_and_communities-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>communities_vis</span> <span class='op'>&lt;-</span> <span class='fu'>composition_of_clusters_and_communities</span><span class='op'>(</span><span class='va'>communities</span>, <span class='st'>"Community"</span><span class='op'>)</span>
+</div><div class='img'><img src='composition_of_clusters_and_communities-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>communities_vis</span> <span class='op'>&lt;-</span> <span class='fu'>composition_of_clusters_and_communities</span><span class='op'>(</span><span class='va'>communities</span>, type_of_aggregate <span class='op'>=</span> <span class='st'>"Community"</span>, column<span class='op'>=</span><span class='st'>"Phenotype"</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -40,11 +40,11 @@
 
 
 <meta property="og:title" content="predict_phenotypes — predict_phenotypes" />
-<meta property="og:description" content="Produces a density plot showing predicted cutoff of a
-positive reading for marker intensity. It also prints to the console the
-number of true positives (TP), true negatives (TN), false positives (FP) and
-false negatives (FN) under the prediction. It returns a dataframe containing
-the predicted intensity status for a particular marker," />
+<meta property="og:description" content="Predicts cell phenotypes based on marker intensity levels. If no prior cell phenotypes are available,
+it adds the phenotypes to the SingleCellExperiment object used as input. If reference cell phenotypes are available,
+it produces a density plot showing predicted cutoff of a
+positive reading for marker intensity and it returns a dataframe containing
+the predicted intensity status for a particular marker." />
 
 
 
@@ -76,7 +76,7 @@ the predicted intensity status for a particular marker," />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SPIAT</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4</span>
       </span>
     </div>
 
@@ -133,18 +133,22 @@ the predicted intensity status for a particular marker," />
     </div>
 
     <div class="ref-description">
-    <p>Produces a density plot showing predicted cutoff of a
-positive reading for marker intensity. It also prints to the console the
-number of true positives (TP), true negatives (TN), false positives (FP) and
-false negatives (FN) under the prediction. It returns a dataframe containing
-the predicted intensity status for a particular marker,</p>
+    <p>Predicts cell phenotypes based on marker intensity levels. If no prior cell phenotypes are available,
+it adds the phenotypes to the SingleCellExperiment object used as input. If reference cell phenotypes are available,
+it produces a density plot showing predicted cutoff of a
+positive reading for marker intensity and it returns a dataframe containing
+the predicted intensity status for a particular marker.</p>
     </div>
 
     <pre class="usage"><span class='fu'>predict_phenotypes</span><span class='op'>(</span>
   <span class='va'>sce_object</span>,
   thresholds <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>tumour_marker</span>,
-  <span class='va'>baseline_markers</span>
+  <span class='va'>baseline_markers</span>,
+  nuclear_marker <span class='op'>=</span> <span class='cn'>NULL</span>,
+  reference_phenotypes <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  markers_to_phenotype <span class='op'>=</span> <span class='cn'>NULL</span>,
+  plot_distribution <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -161,29 +165,38 @@ The order must match the marker order, and it should be NA for DAPI.</p></td>
     </tr>
     <tr>
       <th>tumour_marker</th>
-      <td><p>String containing the tumour_marker used for the image.</p></td>
+      <td><p>String containing the tumour_marker used for the image. If tumor cells are known,
+#annotate tumor cells as 1 and non-tumor cells as 0, and include the rowname</p></td>
     </tr>
     <tr>
       <th>baseline_markers</th>
-      <td><p>Markers not found on tumour cells to refine the threshold</p></td>
+      <td><p>Markers not found on tumour cells to refine the threshold used for tumour cell phenotying.</p></td>
+    </tr>
+    <tr>
+      <th>nuclear_marker</th>
+      <td><p>Nuclear marker used.</p></td>
+    </tr>
+    <tr>
+      <th>reference_phenotypes</th>
+      <td><p>TRUE or FALSE value whether there are reference phenotypes for the sample obtained by the user through other means (e.g. HALO or InForm).
+If there are reference phenotypes available, a matrix of predicted phenotypes, intensities, and reference phenotypes will be returned, which can be used as input to "marker_prediction_plot".
+If no reference phenotype available, the result of the function will be added to the sce object used in the input. Note that if a reference phenotype is to be used,
+the phenotypes must be an explicit combination of positive markers (e.g. AMACR,PDL1), as opposed to descriptive (PDL1+ tumour cells)</p></td>
+    </tr>
+    <tr>
+      <th>markers_to_phenotype</th>
+      <td><p>Markers to be included in the phenotyping. If NULL, then all markers will be used. DAPI needs to be excluded</p></td>
+    </tr>
+    <tr>
+      <th>plot_distribution</th>
+      <td><p>If TRUE, plots of the marker intensities distributions and cutoffs are plotted</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data.frame and plots are returned</p>
+    <p>An updated sce object with cell phenotypes or a data.frame of predicted phenotypes</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>predicted_image</span> <span class='op'>&lt;-</span> <span class='fu'>predict_phenotypes</span><span class='op'>(</span><span class='fu'>SPIAT</span><span class='fu'>::</span><span class='va'><a href='formatted_image.html'>formatted_image</a></span>,
-                                      thresholds <span class='op'>=</span> <span class='cn'>NULL</span>,
-                                      tumour_marker <span class='op'>=</span> <span class='st'>"AMACR"</span>,
-                                      baseline_markers <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"CD3"</span>, <span class='st'>"CD4"</span>, <span class='st'>"CD8"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "For CD3:"
-#&gt; [1] "TP:660 TN:6646 FP:1098 FN:9"</div><div class='img'><img src='predict_phenotypes-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [1] "For PDL-1:"
-#&gt; [1] "TP:2 TN:8182 FP:227 FN:2"</div><div class='img'><img src='predict_phenotypes-2.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [1] "For CD4:"
-#&gt; [1] "TP:410 TN:7472 FP:429 FN:102"</div><div class='img'><img src='predict_phenotypes-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [1] "For CD8:"
-#&gt; [1] "TP:138 TN:7639 FP:636 FN:0"</div><div class='img'><img src='predict_phenotypes-4.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; [1] "For AMACR:"
-#&gt; [1] "TP:4359 TN:3950 FP:17 FN:87"</div><div class='img'><img src='predict_phenotypes-5.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
