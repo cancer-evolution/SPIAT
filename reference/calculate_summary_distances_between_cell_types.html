@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>define_structure — define_structure • SPIAT</title>
+<title>calculate_summary_distances_between_cell_types — calculate_summary_distances_between_cell_types • SPIAT</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="define_structure — define_structure" />
-<meta property="og:description" content="Identify the cells that compose the invasive front, the infiltration and the exclusion" />
+<meta property="og:title" content="calculate_summary_distances_between_cell_types — calculate_summary_distances_between_cell_types" />
+<meta property="og:description" content="Returns the mean, median and stardard deviation of the distances between phenotypes" />
 
 
 
@@ -123,16 +123,21 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>define_structure</h1>
-    <small class="dont-index">Source: <a href='https://github.com/cancer-evolution/SPIAT/blob/master/R/define_structure.R'><code>R/define_structure.R</code></a></small>
-    <div class="hidden name"><code>define_structure.Rd</code></div>
+    <h1>calculate_summary_distances_between_cell_types</h1>
+    <small class="dont-index">Source: <a href='https://github.com/cancer-evolution/SPIAT/blob/master/R/calculate_summary_distances_between_cell_types.R'><code>R/calculate_summary_distances_between_cell_types.R</code></a></small>
+    <div class="hidden name"><code>calculate_summary_distances_between_cell_types.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Identify the cells that compose the invasive front, the infiltration and the exclusion</p>
+    <p>Returns the mean, median and stardard deviation of the distances between phenotypes</p>
     </div>
 
-    <pre class="usage"><span class='fu'>define_structure</span><span class='op'>(</span><span class='va'>sce_object</span>, <span class='va'>names_of_immune_cells</span>, n_margin_layers <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>calculate_summary_distances_between_cell_types</span><span class='op'>(</span>
+  <span class='va'>sce_object</span>,
+  column <span class='op'>=</span> <span class='st'>"Phenotype"</span>,
+  all_marker_combinations <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  combinations_of_interest <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,16 +147,29 @@
       <td><p>SingleCellExperiment object in the form of the output of format_image_to_sce</p></td>
     </tr>
     <tr>
-      <th>names_of_immune_cells</th>
-      <td><p>Vector indicating the names of potential immune cells</p></td>
+      <th>column</th>
+      <td><p>Column of cells to choose the phenotype from (e.g. Cell.Type, Cell.Type2, etc)</p></td>
     </tr>
     <tr>
-      <th>n_margin_layers</th>
-      <td><p>Integer Specifying the number of layers of cells that compose the internal/external margins</p></td>
+      <th>all_marker_combinations</th>
+      <td><p>If TRUE, the distances between all possible combinations of markers
+will be calculated</p></td>
+    </tr>
+    <tr>
+      <th>combinations_of_interest</th>
+      <td><p>Vector of marker combinations to consider if all_marker_combinations
+is FALSE</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A data.frame is returned</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='va'>summary_distances</span> <span class='op'>&lt;-</span> <span class='fu'>calculate_summary_distances_between_cell_types</span><span class='op'>(</span><span class='fu'>SPIAT</span><span class='fu'>::</span><span class='va'><a href='formatted_image.html'>formatted_image</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "All markers are used in pair-wise distance calculation: "
+#&gt; [1] "OTHER"   "AMACR"   "CD3,CD4" "CD3,CD8" "CD3"     "PDL-1"  </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
