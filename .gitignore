@@ -6,3 +6,5 @@ SPIAT.Rproj
 ^doc$
 ^docs$
 ^Meta$
+*.DS_Store
+.Rprofile

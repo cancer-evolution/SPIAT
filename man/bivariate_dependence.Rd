@@ -8,8 +8,8 @@ bivariate_dependence(
   sce_object,
   method = "Kcross",
   phenotypes,
-  merge = NULL,
-  merge_name = NULL
+  column,
+  plot_results = TRUE
 )
 }
 \arguments{
@@ -19,9 +19,9 @@ bivariate_dependence(
 
 \item{phenotypes}{Vector of phenotypes of interest}
 
-\item{merge}{Vector of phenotypes to be merged}
+\item{column}{String that is the name of the column of the types}
 
-\item{merge_name}{String that is the name of the merged phenotype}
+\item{plot_results}{TRUE if result to be plotted, FALSE if not. In either case, an object with the results is returned}
 }
 \description{
 find the dependence between two types of cells

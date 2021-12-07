@@ -8,7 +8,11 @@ predict_phenotypes(
   sce_object,
   thresholds = NULL,
   tumour_marker,
-  baseline_markers
+  baseline_markers,
+  nuclear_marker = NULL,
+  reference_phenotypes = FALSE,
+  markers_to_phenotype = NULL,
+  plot_distribution = TRUE
 )
 }
 \arguments{
@@ -17,23 +21,29 @@ predict_phenotypes(
 \item{thresholds}{(Optional) Vector of numbers specifying the cutoff of a positive reading.
 The order must match the marker order, and it should be NA for DAPI.}
 
-\item{tumour_marker}{String containing the tumour_marker used for the image.}
+\item{tumour_marker}{String containing the tumour_marker used for the image. If tumor cells are known,
+#annotate tumor cells as 1 and non-tumor cells as 0, and include the rowname}
 
-\item{baseline_markers}{Markers not found on tumour cells to refine the threshold}
+\item{baseline_markers}{Markers not found on tumour cells to refine the threshold used for tumour cell phenotying.}
+
+\item{nuclear_marker}{Nuclear marker used.}
+
+\item{reference_phenotypes}{TRUE or FALSE value whether there are reference phenotypes for the sample obtained by the user through other means (e.g. HALO or InForm).
+If there are reference phenotypes available, a matrix of predicted phenotypes, intensities, and reference phenotypes will be returned, which can be used as input to "marker_prediction_plot".
+If no reference phenotype available, the result of the function will be added to the sce object used in the input. Note that if a reference phenotype is to be used,
+the phenotypes must be an explicit combination of positive markers (e.g. AMACR,PDL1), as opposed to descriptive (PDL1+ tumour cells)}
+
+\item{markers_to_phenotype}{Markers to be included in the phenotyping. If NULL, then all markers will be used. DAPI needs to be excluded}
+
+\item{plot_distribution}{If TRUE, plots of the marker intensities distributions and cutoffs are plotted}
 }
 \value{
-A data.frame and plots are returned
+An updated sce object with cell phenotypes or a data.frame of predicted phenotypes
 }
 \description{
-Produces a density plot showing predicted cutoff of a
-positive reading for marker intensity. It also prints to the console the
-number of true positives (TP), true negatives (TN), false positives (FP) and
-false negatives (FN) under the prediction. It returns a dataframe containing
-the predicted intensity status for a particular marker,
-}
-\examples{
-predicted_image <- predict_phenotypes(SPIAT::formatted_image,
-                                      thresholds = NULL,
-                                      tumour_marker = "AMACR",
-                                      baseline_markers = c("CD3", "CD4", "CD8"))
+Predicts cell phenotypes based on marker intensity levels. If no prior cell phenotypes are available,
+it adds the phenotypes to the SingleCellExperiment object used as input. If reference cell phenotypes are available,
+it produces a density plot showing predicted cutoff of a
+positive reading for marker intensity and it returns a dataframe containing
+the predicted intensity status for a particular marker.
 }

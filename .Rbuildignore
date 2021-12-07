@@ -6,3 +6,5 @@
 ^doc$
 ^docs$
 ^Meta$
+^\.github$
+^Dockerfile$

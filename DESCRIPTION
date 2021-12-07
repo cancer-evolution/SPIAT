@@ -1,20 +1,26 @@
 Package: SPIAT
 Type: Package
 Title: Spatial Image Analysis of Tissues
-Version: 0.3
+Version: 0.4
 Authors@R: c(
     person(given = "Anna",
            family="Trigos",
            role=c("aut", "cre"),
            email="anna.trigos@petermac.org"),
-    person(given = "Tom",
-           family = " Yang",
-           role="aut",
-           email="yangtp3344@gmail.com"),
     person(given = "Yuzhou",
            family = " Feng",
            role="aut",
            email="yuzhou0610@gmail.com"),
+    person(given = "Tom",
+           family = " Yang",
+           role="aut",
+           email="yangtp3344@gmail.com"),
+    person(given = "Mabel",
+           family = " Li",
+           role="aut"),
+    person(given = "John",
+           family = " Zhu",
+           role="aut"),
     person(given = "Volkan",
            family=" Ozcoban",
            role="aut",
@@ -57,15 +63,33 @@ Imports:
     utils,
     vroom,
     ComplexHeatmap,
-    dittoSeq
+    dittoSeq,
+    spatstat,
+    spatstat.geom,
+    alphahull,
+    stringr,
+    igraph,
+    methods,
+    spatstat.core,
+    raster,
+    sp,
+    xROI,
+    Seurat,
+    Rphenograph,
+    divo, 
+    ggpubr,
+    magrittr
 Suggests:
     BiocStyle,
     knitr,
     rmarkdown,
     pkgdown,
     testthat
+Remotes:
+    babichmorrowc/hull2spatial,
+    JinmiaoChenLab/Rphenograph
 biocViews: BiomedicalInformatics, CellBiology, Clustering, DataImport, ImmunoOncology, QualityControl, SingleCell, Software, Visualization
 BugReports: https://github.com/cancer-evolution/SPIAT/issues
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 VignetteBuilder: knitr

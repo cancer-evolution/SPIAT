@@ -8,6 +8,7 @@
 #' @param colour_vector Vector specifying the colours of each cell phenotype
 #' @import dplyr
 #' @import ggplot2
+#' @import tibble
 #' @importFrom SummarizedExperiment colData assay
 #' @return A plot is returned
 #' @examples
@@ -71,8 +72,17 @@ plot_cell_categories <- function(sce_object, phenotypes_of_interest, colour_vect
   }
   
   p <- ggplot(formatted_data, aes(x = Cell.X.Position, y = Cell.Y.Position, colour = Phenotype)) +
-    geom_point(aes(colour = Phenotype), size = 1) +
-    guides(alpha = FALSE) +
+    geom_point(aes(colour = Phenotype), size = 1)
+  p <- ggplot(formatted_data, aes(x = Cell.X.Position, y = Cell.Y.Position, colour = Phenotype))
+  if (any(formatted_data$Phenotype == "OTHER")) {
+    p <- p + geom_point(data=subset(formatted_data, Phenotype=='OTHER'), aes(colour = Phenotype), size = 1) + 
+      geom_point(data=subset(formatted_data, Phenotype!='OTHER'), aes(colour = Phenotype), size = 1) 
+  }
+  else {
+    p <- p + geom_point(aes(colour = Phenotype), size = 1)
+  }
+  p <- p +
+    guides(alpha = "none") +
     labs(colour = "Phenotypes") + 
     scale_color_manual(breaks = all_phenotypes, values=all_colours) +
     theme(panel.grid.major = element_blank(),
